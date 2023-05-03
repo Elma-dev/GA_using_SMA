@@ -71,17 +71,28 @@ public class GnaGui extends Application {
 
         //Results Node
         HBox resHbox=new HBox();
+        VBox resVbox=new VBox();
         Text results=new Text();
+        Text iter=new Text();
+
 
         //style
         resHbox.setPrefWidth(600);resHbox.setPrefHeight(192);
+        resVbox.setPrefWidth(612);resVbox.setPrefHeight(192);
+
         resHbox.setAlignment(Pos.CENTER);
+        resVbox.setAlignment(Pos.CENTER);
+
         results.setFont(Font.font(30));
+
         resHbox.setLayoutX(1);
         resHbox.setLayoutY(209);
-        //resHbox.setStyle("-fx-background-color: green");
+
         //addToComp
-        resHbox.getChildren().add(results);
+
+        resVbox.getChildren().add(iter);
+        resVbox.getChildren().add(results);
+        resHbox.getChildren().add(resVbox);
         root.getChildren().add(resHbox);
 
 
@@ -101,12 +112,12 @@ public class GnaGui extends Application {
                 @Override
                 protected String call() throws Exception {
                     for(int k=0;k<iterNbr;k++) {
-                        results.setText(Arrays.toString(gnaStr.population.get(0).getGenes()));
+                        iter.setText("i="+k);
                         gnaStr.sortPopulation();
                         gnaStr.getPopulation().forEach(c -> {
                             System.out.println(c);
                         });
-                        System.out.println();
+                        results.setText(Arrays.toString(gnaStr.population.get(0).getGenes()));
                         if(Arrays.compare(gnaStr.population.get(0).getGenes(),target.toCharArray())==0){
                             break;
                         }
@@ -115,7 +126,7 @@ public class GnaGui extends Application {
                             gnaStr.mutation();
                         System.out.println("-----------------------------------------------");
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(50);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
