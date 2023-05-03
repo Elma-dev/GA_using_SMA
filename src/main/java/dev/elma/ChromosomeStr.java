@@ -35,6 +35,10 @@ public class ChromosomeStr implements Comparable{
         this.genes = genes;
     }
 
+    public int getFitness() {
+        return fitness;
+    }
+
     @Override
     public String toString() {
         return "ChromosomeStr{" +
@@ -46,6 +50,11 @@ public class ChromosomeStr implements Comparable{
     @Override
     public int compareTo(Object o) {
         ChromosomeStr individual=(ChromosomeStr) o;
+
+        if(this.fitness==0)
+            return 1;
+        if(individual.fitness==0)
+            return -1;
         if (this.fitness>individual.fitness)
             return 1;
         else if(this.fitness<individual.fitness){

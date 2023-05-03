@@ -27,7 +27,6 @@ public class GNAStr {
         int crossPoint=new Random().nextInt(target.length()-2)+1;
         char genes1[]=new char[target.length()];
         char genes2[]=new char[target.length()];
-        System.out.println(crossPoint);
         for(int i=0;i<target.length();i++){
 
             genes1[i]=population.get(0).getGenes()[i];

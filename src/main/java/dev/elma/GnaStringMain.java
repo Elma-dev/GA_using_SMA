@@ -10,17 +10,21 @@ public class GnaStringMain {
 
          */
 
-        GNAStr gnaStr=new GNAStr(200,"abc");
-        for(int i=0;i<1000;i++) {
+        GNAStr gnaStr=new GNAStr(10,"hello");
+        for(int i=0;i<30;i++) {
 
-            gnaStr.sortPopulation().forEach(c -> {
-                System.out.println(c);
-            });
+            gnaStr.sortPopulation();
+            if(gnaStr.getPopulation().get(0).getFitness()==0){
+                break;
+            }
             gnaStr.crossover();
+            if(Math.random()<0.5)
+                gnaStr.mutation();
 
             gnaStr.getPopulation().forEach(c -> {
                 System.out.println(c);
             });
+
             System.out.println("-----------------------------------------------");
         }
     }
