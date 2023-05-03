@@ -28,9 +28,6 @@ public class GnaStringMain {
             gnaStr.crossover();
             if(Math.random()<0.5)
                 gnaStr.mutation();
-
-
-
             System.out.println("-----------------------------------------------");
         }
     }

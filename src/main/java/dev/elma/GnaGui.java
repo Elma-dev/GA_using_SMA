@@ -2,17 +2,23 @@ package dev.elma;
 
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javafx.scene.control.TextField;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -63,10 +69,66 @@ public class GnaGui extends Application {
         //hBox.setStyle("-fx-background-color: red");
         hBox.setPrefWidth(600);
 
+        //Results Node
+        HBox resHbox=new HBox();
+        Text results=new Text();
+
+        //style
+        resHbox.setPrefWidth(600);resHbox.setPrefHeight(192);
+        resHbox.setAlignment(Pos.CENTER);
+        results.setFont(Font.font(30));
+        resHbox.setLayoutX(1);
+        resHbox.setLayoutY(209);
+        //resHbox.setStyle("-fx-background-color: green");
+        //addToComp
+        resHbox.getChildren().add(results);
+        root.getChildren().add(resHbox);
+
+
+
         //Gna Algo Link
+
         start.setOnAction(actionEvent -> {
-            System.out.println(textField[0].getText());
+            String target=textField[0].getText();
+            int popSize=Integer.parseInt(textField[1].getText());
+            int iterNbr=Integer.parseInt(textField[2].getText());
+            System.out.println(target+" "+popSize+" "+iterNbr);
+            GNAStr gnaStr=new GNAStr(popSize,target);
+
+            //ObservableList<String> strings= FXCollections.observableList(Arrays.toString(gnaStr.population.get(0).getGenes()))
+            Task<String> test=new Task<>(){
+
+                @Override
+                protected String call() throws Exception {
+                    for(int k=0;k<iterNbr;k++) {
+                        results.setText(Arrays.toString(gnaStr.population.get(0).getGenes()));
+                        gnaStr.sortPopulation();
+                        gnaStr.getPopulation().forEach(c -> {
+                            System.out.println(c);
+                        });
+                        System.out.println();
+                        if(Arrays.compare(gnaStr.population.get(0).getGenes(),target.toCharArray())==0){
+                            break;
+                        }
+                        gnaStr.crossover();
+                        if(Math.random()<0.5)
+                            gnaStr.mutation();
+                        System.out.println("-----------------------------------------------");
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    return null;
+                }
+            };
+            new Thread(test).start();
+
         });
+
+
+
 
         Scene scene=new Scene(root,600,400);
         stage.setScene(scene);
