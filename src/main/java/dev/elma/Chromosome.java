@@ -30,6 +30,7 @@ public class Chromosome implements Comparable {
     }
 
     public int getFitness() {
+        fitness=0;
         for(int i = 0; i< genes.length; i++){
             fitness+= genes[i];
         }

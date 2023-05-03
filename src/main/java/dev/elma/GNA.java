@@ -44,5 +44,19 @@ public class GNA{
         System.out.println(childChromo2.toString());
 
     }
+    List<Chromosome> mutation(){
+        int i=new Random().nextInt(sizeChromosome);
+        int j=new Random().nextInt(sizeChromosome);
+        int genes1[]=population.get(0).getGenes();
+        int genes2[]=population.get(1).getGenes();
+
+        System.out.println(population.get(0).getGenes()[i]+" "+population.get(1).getGenes()[j] +" before");
+        genes1[i]= genes1[i]==1 ? 0 : 1;
+        genes2[j]= genes2[j]==1 ? 0 : 1;
+        System.out.println(population.get(0).getFitness()+" "+population.get(1).getFitness()+" after");
+        System.out.println(i+""+j);
+
+        return this.getPopulation();
+    }
 
 }

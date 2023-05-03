@@ -18,6 +18,8 @@ public class Main {
         gna.crossover();
         System.out.println("-------------------------------------");
         gna.getPopulation().forEach(c-> System.out.println(c.toString()));
+        System.out.println("---------------------------------------");
+        gna.mutation().forEach(c->System.out.println(c.toString()));
 
 
     }
