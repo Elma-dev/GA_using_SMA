@@ -1,5 +1,7 @@
 package dev.elma;
 
+import java.util.Arrays;
+
 public class GnaStringMain {
     public static void main(String[] args) {
         /*
@@ -10,20 +12,24 @@ public class GnaStringMain {
 
          */
 
-        GNAStr gnaStr=new GNAStr(10,"hello");
+        String target="hello";
+
+        GNAStr gnaStr=new GNAStr(10,target);
         for(int i=0;i<30;i++) {
 
             gnaStr.sortPopulation();
-            if(gnaStr.getPopulation().get(0).getFitness()==0){
+            gnaStr.getPopulation().forEach(c -> {
+                System.out.println(c);
+            });
+            System.out.println();
+            if(Arrays.compare(gnaStr.population.get(0).getGenes(),target.toCharArray())==0){
                 break;
             }
             gnaStr.crossover();
             if(Math.random()<0.5)
                 gnaStr.mutation();
 
-            gnaStr.getPopulation().forEach(c -> {
-                System.out.println(c);
-            });
+
 
             System.out.println("-----------------------------------------------");
         }
