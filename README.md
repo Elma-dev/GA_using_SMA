@@ -80,3 +80,32 @@ in this function all we need is sort the poputlation fitness and get the k chrom
         return this.getPopulation();
     }
 ```
+# Applications
+## App1
+With the following parameters: **populationSize=5, chromoSize=5, and stoppinCreteria =(nbrIter=50 || fitness=highValue=5)**, we attempt to employ GNA to obtain high fitness in populations that have chromosomes with genes in bit.
+```math
+fitness=\sum_{i=0}^{chromoSize}G_{i}
+```
+
+```
+   GNA gna = new GNA(5, 5);
+
+        for(int i=0;i<50;i++){
+            gna.sortPopulation();
+            gna.crossover();
+            if(Math.random()<0.5)
+                gna.mutation();
+            gna.getPopulation().forEach(c-> System.out.println(c.toString()));
+            System.out.println("-------high fit : "+gna.getHighFit()+" --------");
+            if(gna.getHighFit()==5) break;
+        }
+```
+![image](https://user-images.githubusercontent.com/67378945/236703714-50ec0711-e3c3-4a88-b3c5-fbf4a513a0b3.png)
+![image](https://user-images.githubusercontent.com/67378945/236703734-467fa216-3303-4849-ac19-7ad7bbf281d4.png)
+
+## App2
+In app2, we attempt to construct a user-provided word; in this instance, the chromosome comprises letters in place of bits.
+```math
+fitness=\sum_{i=1}^{len(target)}=T_{i} - G_{i}
+```
+
