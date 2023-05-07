@@ -108,4 +108,5 @@ In app2, we attempt to construct a user-provided word; in this instance, the chr
 ```math
 fitness=\sum_{i=1}^{len(target)}=T_{i} - G_{i}
 ```
-
+* results
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/67378945/236704976-b27ea63b-195c-48cc-ba5d-14cabad36d1e.gif)
