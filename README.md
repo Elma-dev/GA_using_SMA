@@ -24,3 +24,59 @@ The idea of selection phase is to select the fittest individuals and let them pa
 4. Mutation : Mutation helps to introduce new genetic diversity into the population and can help to prevent the algorithm from getting stuck in a local minimum.
 
 ![image](https://user-images.githubusercontent.com/67378945/236703075-391113f8-7fc7-422e-978d-a79d12d99047.png)
+
+## Schema Gneral of GNA
+![image](https://user-images.githubusercontent.com/67378945/236703227-da2f7f4c-4a15-4110-8d90-7f8f599f45da.png)
+
+# Implementation 
+## Selection function 
+in this function all we need is sort the poputlation fitness and get the k chromo with the highest fitness 
+```
+   public ArrayList<Chromosome> sortPopulation(){
+        Collections.sort(population,Collections.reverseOrder());
+        return population;
+    }
+```
+## Crossover function
+```
+   public void crossover(){
+        int crosPoint=new Random().nextInt(sizeChromosome-2)+1;
+
+        int genes1[]=new int[sizeChromosome];
+        int genes2[]=new int[sizeChromosome];
+
+        for(int i=0;i<sizeChromosome;i++){
+            genes1[i]=population.get(0).getGenes()[i];
+            genes2[i]=population.get(1).getGenes()[i];
+        }
+
+        Chromosome childChromo1=new Chromosome(genes1);
+        Chromosome childChromo2=new Chromosome(genes2);
+
+        for(int i=0;i<crosPoint;i++){
+            childChromo1.getGenes()[i]=population.get(1).getGenes()[i];
+            childChromo2.getGenes()[i]=population.get(0).getGenes()[i];
+        }
+
+        population.get(0).getFitness();
+        population.get(1).getFitness();
+
+    }
+```
+## Mutation function
+```
+   List<Chromosome> mutation(){
+        int i=new Random().nextInt(sizeChromosome);
+        int j=new Random().nextInt(sizeChromosome);
+        int genes1[]=population.get(0).getGenes();
+        int genes2[]=population.get(1).getGenes();
+
+        genes1[i]= genes1[i]==1 ? 0 : 1;
+        genes2[j]= genes2[j]==1 ? 0 : 1;
+
+        population.get(0).getFitness();
+        population.get(1).getFitness();
+
+        return this.getPopulation();
+    }
+```
