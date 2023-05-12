@@ -14,9 +14,7 @@ import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class MainAgent extends Agent {
     private HashMap<AID,Double> agentFitness;
@@ -56,19 +54,33 @@ public class MainAgent extends Agent {
             @Override
             public void action() {
                 getAllAgents();
-                ACLMessage message=new ACLMessage();
-                for(int i=0;i<agents.length;i++){
-                    message.setContent("informations");
-                    message.addReceiver(agents[i]);
-                    send(message);
-                    ACLMessage receive = receive();
-                    if(receive!=null){
-                        Double f =Double.parseDouble( receive.getContent().split(":")[1]);
-                        agentFitness.put(receive.getSender(),f);
+                //System.out.println(agents.length==populationSize);
+                if(agents.length==populationSize){
 
+                    ACLMessage message=new ACLMessage();
+                    //getfitness of each agents
+                    int i;
+                    for(i=0;i<agents.length;i++){
+                        message.setContent("informations");
+                        message.addReceiver(agents[i]);
+                        send(message);
+                        ACLMessage receive = receive();
+                        if(receive!=null){
+                            Double f =Double.parseDouble( receive.getContent().split(":")[1]);
+                            agentFitness.put(receive.getSender(),f);
+                        }
+                    }
+                    //sort the agents
+                    if(agents.length==agentFitness.size()){
+
+                        System.out.println(agentFitness.size());
+                        agentFitness=sortByValue(agentFitness);
+                        System.out.println(agentFitness);
                     }
 
                 }
+
+
             }
         });
 
@@ -88,6 +100,29 @@ public class MainAgent extends Agent {
         } catch (FIPAException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static HashMap<AID, Double> sortByValue(HashMap<AID, Double> hm)
+    {
+        // Create a list from elements of HashMap
+        List<Map.Entry<AID, Double> > list =
+                new LinkedList<Map.Entry<AID, Double> >(hm.entrySet());
+
+        // Sort the list
+        Collections.sort(list, new Comparator<Map.Entry<AID, Double> >() {
+            public int compare(Map.Entry<AID, Double> o1,
+                               Map.Entry<AID, Double> o2)
+            {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        }.reversed());
+
+        // put data from sorted list to hashmap
+        HashMap<AID, Double> temp = new LinkedHashMap<AID, Double>();
+        for (Map.Entry<AID, Double> aa : list) {
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        return temp;
     }
 
 }
