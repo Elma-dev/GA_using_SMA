@@ -4,6 +4,12 @@ import dev.elma.AgentContainer;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.ParallelBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import jade.wrapper.ControllerException;
@@ -14,12 +20,38 @@ import java.util.Random;
 public class ChromoAgent extends Agent {
     private int genes[];
     private int fitness;
+    private ParallelBehaviour parallelBehaviour;
+    private DFAgentDescription dfAgentDescription;
+    private ServiceDescription serviceDescription;
 
     @Override
     protected void setup() {
         genes=new int[5];
         fitness=0;
         this.generateGenes();
+        parallelBehaviour = new ParallelBehaviour();
+        dfAgentDescription=new DFAgentDescription();
+        dfAgentDescription.setName(this.getAID());
+
+        serviceDescription=new ServiceDescription();
+        serviceDescription.setName("chromosomeAgent");
+        serviceDescription.setType("AnalyseAgents");
+
+        dfAgentDescription.addServices(serviceDescription);
+
+
+
+
+        parallelBehaviour.addSubBehaviour(new OneShotBehaviour() {
+            @Override
+            public void action() {
+                try {
+                    DFService.register(myAgent,dfAgentDescription);
+                } catch (FIPAException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         this.addBehaviour(new CyclicBehaviour() {
             @Override
             public void action() {
