@@ -26,6 +26,9 @@ public class ChromoAgent extends Agent {
 
     @Override
     protected void setup() {
+
+        String name =(String) getArguments()[0];
+        System.out.println(name);
         genes=new int[5];
         fitness=0;
         this.generateGenes();
@@ -34,25 +37,21 @@ public class ChromoAgent extends Agent {
         dfAgentDescription.setName(this.getAID());
 
         serviceDescription=new ServiceDescription();
-        serviceDescription.setName("chromosomeAgent");
+        serviceDescription.setName(name);
         serviceDescription.setType("AnalyseAgents");
 
         dfAgentDescription.addServices(serviceDescription);
 
+        try {
+            DFService.register(this,dfAgentDescription);
+        } catch (FIPAException e) {
+            e.printStackTrace();
+        }
 
 
 
-        parallelBehaviour.addSubBehaviour(new OneShotBehaviour() {
-            @Override
-            public void action() {
-                try {
-                    DFService.register(myAgent,dfAgentDescription);
-                } catch (FIPAException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        this.addBehaviour(new CyclicBehaviour() {
+
+        parallelBehaviour.addSubBehaviour(new CyclicBehaviour() {
             @Override
             public void action() {
                 ACLMessage receive = receive();
@@ -74,10 +73,21 @@ public class ChromoAgent extends Agent {
                 else block();
             }
         });
+
+        this.addBehaviour(parallelBehaviour);
+    }
+
+    @Override
+    protected void takeDown() {
+        try {
+            DFService.deregister(this);
+        } catch (FIPAException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void generateGenes(){
-        for(int i=0;i<genes.length;i++){
+        for(int i=0;i<5;i++){
             genes[i]= new Random().nextInt(2);
             fitness+=genes[i];
         }

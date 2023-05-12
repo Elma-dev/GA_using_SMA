@@ -3,6 +3,7 @@ package dev.elma;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
+import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 public class AgentContainer {
@@ -11,6 +12,8 @@ public class AgentContainer {
         ProfileImpl profile=new ProfileImpl();
         profile.setParameter(Profile.MAIN_HOST,"localhost");
         jade.wrapper.AgentContainer agentContainer = instance.createAgentContainer(profile);
-        agentContainer.createNewAgent("king","dev.elma.agents.MainAgent",new Object[]{10});
+        AgentController king = agentContainer.createNewAgent("king", "dev.elma.agents.MainAgent", new Object[]{4});
+        king.start();
+
     }
 }
